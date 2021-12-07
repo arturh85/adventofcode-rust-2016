@@ -58,14 +58,14 @@ fn parse_input(input: &str) -> Vec<Instr> {
         .collect()
 }
 
-/// How many blocks away is Easter Bunny HQ?
+/// Part 1: How many blocks away is Easter Bunny HQ?
 #[aoc(day1, part1)]
 fn part1(input: &Vec<Instr>) -> u64 {
     let pos = execute1(input);
     manhattan_distance(pos)
 }
 
-/// Part 2
+/// Part 2: How many blocks away is the first location you visit twice?
 #[aoc(day1, part2)]
 fn part2(input: &Vec<Instr>) -> u64 {
     let pos = execute2(input).unwrap();
