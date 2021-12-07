@@ -137,9 +137,9 @@ fn keypad_get(keypad: &str, pos: (i64, i64)) -> Option<char> {
         return None;
     }
     let line = keypad.lines().nth(pos.0 as usize)?;
-    let char = line.chars().nth(pos.1 as usize)?;
-    if char != ' ' {
-        Some(char)
+    let key = line.chars().nth(pos.1 as usize)?;
+    if key != ' ' {
+        Some(key)
     } else {
         None
     }
@@ -148,8 +148,8 @@ fn keypad_get(keypad: &str, pos: (i64, i64)) -> Option<char> {
 fn execute(input: &Vec<Vec<Instr>>, keypad: &str, start: char) -> String {
     let mut code = String::new();
     let mut pos = (0, 0);
-    for (row, keyline) in keypad.lines().enumerate() {
-        if let Some(col) = keyline.find(start) {
+    for (row, line) in keypad.lines().enumerate() {
+        if let Some(col) = line.find(start) {
             pos.0 = row as i64;
             pos.1 = col as i64;
             break;
