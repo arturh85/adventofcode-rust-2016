@@ -125,7 +125,7 @@ impl Ipv7Address {
     fn is_ssl_supported(&self) -> bool {
         let mut supernet_aba: Vec<String> = Vec::new();
         for supernet in &self.supernets {
-            supernet_aba.append(&mut is_aba(supernet));
+            supernet_aba.append(&mut list_aba(supernet));
         }
         for hypernet in &self.hypernets {
             for aba in &supernet_aba {
@@ -140,7 +140,9 @@ impl Ipv7Address {
 
 /// An ABA is any three-character sequence which consists of the same character twice with a
 /// different character between them, such as `xyx` or `aba`.
-fn is_aba(input: &str) -> Vec<String> {
+///
+/// returns list of transformed BAB to search for
+fn list_aba(input: &str) -> Vec<String> {
     let mut aba_list = Vec::new();
     let input: Vec<char> = input.chars().map(|c| c).collect();
     for window in input.windows(3) {
