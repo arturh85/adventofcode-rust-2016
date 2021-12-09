@@ -164,34 +164,11 @@ fn is_abba(input: &str) -> bool {
     for window in input.windows(4) {
         let window = String::from_iter(window);
         let chars: Vec<char> = window.chars().map(|c| c).collect();
-        if chars[0] != chars[1] && is_palindrome(&window) {
+        if chars[0] != chars[1] && chars[0] == chars[3] && chars[1] == chars[2] {
             return true;
         }
     }
     false
-}
-
-// https://github.com/bluejekyll/palindrome-rs/blob/master/src/lib.rs
-fn is_palindrome(phrase: &str) -> bool {
-    // get the chars iterator and associated index
-    phrase
-        .char_indices()
-        .filter(|&(_, c)| c.is_alphabetic())
-        // zip with the second half...
-        .zip(
-            phrase
-                .char_indices()
-                // which needs to be reversed...
-                .rev()
-                // and filter out bad cars
-                .filter(|&(_, c)| c.is_alphabetic()),
-        )
-        // accept all input until the indexes have crossed
-        .take_while(|&((first_count, _), (last_count, _))| first_count < last_count)
-        // check that all the chars from the beginning and end match
-        .all(|((_, first_char), (_, last_char))| {
-            first_char.to_ascii_lowercase() == last_char.to_ascii_lowercase()
-        })
 }
 
 #[cfg(test)]
