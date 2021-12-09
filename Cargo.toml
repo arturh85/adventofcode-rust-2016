@@ -11,6 +11,7 @@ aoc-runner = "0.3.0"
 aoc-runner-derive = "0.3.0"
 
 anyhow = "*"
+regex = "*"
 num-traits = "0.2" # day 1
 num-derive = "0.3" # day 1
 #serde_json = "*" # day 12
