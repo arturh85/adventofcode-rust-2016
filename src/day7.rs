@@ -50,8 +50,8 @@ fn parse_input(input: &str) -> Vec<Ipv7Address> {
     input
         .lines()
         .map(|line| {
-            let mut normal = Vec::new();
-            let mut hypernet = Vec::new();
+            let mut supernets = Vec::new();
+            let mut hypernets = Vec::new();
 
             let parts: Vec<String> = line
                 .replace("[", "|[")
@@ -61,14 +61,14 @@ fn parse_input(input: &str) -> Vec<Ipv7Address> {
                 .collect();
             for part in parts {
                 if part.starts_with("[") {
-                    hypernet.push(part.replace("[", "").replace("]", ""));
+                    hypernets.push(part.replace("[", "").replace("]", ""));
                 } else {
-                    normal.push(part);
+                    supernets.push(part);
                 }
             }
             Ipv7Address {
-                supernets: normal,
-                hypernets: hypernet,
+                supernets,
+                hypernets,
             }
         })
         .collect()
