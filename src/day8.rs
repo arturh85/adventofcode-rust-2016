@@ -146,11 +146,7 @@ fn count_on(grid: &Vec<Vec<bool>>) -> usize {
 fn build_grid(width: usize, height: usize) -> Vec<Vec<bool>> {
     let mut rows = Vec::new();
     for _ in 0..height {
-        let mut row = Vec::new();
-        for _ in 0..width {
-            row.push(false);
-        }
-        rows.push(row);
+        rows.push(vec![false; width]);
     }
     rows
 }

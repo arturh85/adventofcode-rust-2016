@@ -8,7 +8,7 @@ sudo sh -c 'echo -1 >/proc/sys/kernel/perf_event_paranoid'
 
 function aoc () {
   nl=$'\n'
-  echo "Running Day $1 Part $2"
+  echo "::group::{Running Day $1 Part $2}"
   cargo aoc -d "$1" -p "$2" | grep -v "AOC $AOC_YEAR" | sed "s/Day $1 - Part $2/### Result/g" | sed 's/,/ /g' | sed 's/generator/'"\\${nl}"'- generator/g' | sed 's/runner/'"\\${nl}"'- runner/g' > "times-$1-$2.md"
   if test -s "times-$1-$2.md"; then
     if [ "$2" == "1" ]; then
@@ -27,6 +27,7 @@ function aoc () {
       echo "- 🤯 Flame Graph generation took longer than three minutes." >> times.md
     fi
   fi
+  echo "::endgroup::"
 }
 
 echo "# Execution times for Advent of Code $AOC_YEAR" > times.md
@@ -36,7 +37,7 @@ echo "- 🚀 Benchmarked using [Github Actions](https://github.com/features/acti
 echo "## Distribution" >> times.md
 echo "![Pie Chart](PIECHART)" >> times.md
 
-for (( i = 1; i <= 24; i++ )); do
+for (( i = 1; i <= 25; i++ )); do
   aoc "$i" 1
   aoc "$i" 2
 done

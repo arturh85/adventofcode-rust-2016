@@ -157,6 +157,7 @@ fn execute2(instructions: &Vec<Instr>) -> Option<(i64, i64)> {
     None
 }
 
+// see https://en.wikipedia.org/wiki/Taxicab_geometry
 fn manhattan_distance(pos: (i64, i64)) -> u64 {
     (pos.0.abs() + pos.1.abs()) as u64
 }
@@ -170,20 +171,20 @@ mod tests {
         // Following `R2, L3` leaves you `2` blocks East and `3` blocks North, or `5` blocks away.
         let example1 = parse_input("R2, L3");
         let target1 = execute1(&example1);
-        assert_eq!((3, 2), target1);
-        assert_eq!(5, manhattan_distance(target1));
+        assert_eq!(target1, (3, 2));
+        assert_eq!(manhattan_distance(target1), 5);
 
         // `R2, R2, R2` leaves you `2` blocks due South of your starting position, which is `2`
         //  blocks away.
         let example2 = parse_input("R2, R2, R2");
         let target2 = execute1(&example2);
-        assert_eq!((-2, 0), target2);
-        assert_eq!(2, manhattan_distance(target2));
+        assert_eq!(target2, (-2, 0));
+        assert_eq!(manhattan_distance(target2), 2);
 
         // `R5, L5, R5, R3` leaves you `12` blocks away.
         let example3 = parse_input("R5, L5, R5, R3");
         let target3 = execute1(&example3);
-        assert_eq!(12, manhattan_distance(target3));
+        assert_eq!(manhattan_distance(target3), 12);
     }
 
     #[test]
@@ -191,7 +192,7 @@ mod tests {
         // For example, if your instructions are R8, R4, R4, R8, the first location you visit twice is 4 blocks away, due East.
         let example = parse_input("R8, R4, R4, R8");
         let target = execute2(&example).unwrap();
-        assert_eq!((0, 4), target);
-        assert_eq!(4, manhattan_distance(target));
+        assert_eq!(target, (0, 4));
+        assert_eq!(manhattan_distance(target), 4);
     }
 }

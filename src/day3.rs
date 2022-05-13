@@ -106,6 +106,6 @@ mod tests {
 
     #[test]
     fn part1_examples() {
-        assert_eq!(0, part1(&parse_input("5 10 25")));
+        assert_eq!(part1(&parse_input("5 10 25")), 0);
     }
 }

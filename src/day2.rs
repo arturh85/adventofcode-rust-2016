@@ -181,13 +181,13 @@ UUUUD";
     fn part1_examples() {
         let input = parse_input(EXAMPLE);
         // So, in this example, the bathroom code is `1985`.
-        assert_eq!("1985", execute(&input, KEYPAD_1, '5'));
+        assert_eq!(execute(&input, KEYPAD_1, '5'), "1985");
     }
 
     #[test]
     fn part2_examples() {
         let input = parse_input(EXAMPLE);
         // So, given the actual keypad layout, the code would be `5DB3`.
-        assert_eq!("5DB3", execute(&input, KEYPAD_2, '5'));
+        assert_eq!(execute(&input, KEYPAD_2, '5'), "5DB3");
     }
 }
