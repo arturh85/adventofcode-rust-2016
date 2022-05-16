@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Day 7: Internet Protocol Version 7"><meta name="keywords" content="rust, rustlang, rust-lang, day7"><title>adventofcode_rust_2016::day7 - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../adventofcode_rust_2016/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../adventofcode_rust_2016/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Module day7</a></h2><div class="sidebar-elems"><section><div class="block"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="day7" data-ty="mod" data-relpath="./"></div><script defer src="./sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../adventofcode_rust_2016/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Module <a href="../index.html">adventofcode_rust_2016</a>::<wbr><a class="mod" href="#">day7</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/adventofcode_rust_2016/day7.rs.html#1-207">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="day-7-internet-protocol-version-7"><a href="#day-7-internet-protocol-version-7">Day 7: Internet Protocol Version 7</a></h2>
+<p>While snooping around the local network of EBHQ, you compile a list of
+<a href="https://en.wikipedia.org/wiki/IP_address">IP addresses</a> (they’re IPv7, of course;
+<a href="https://en.wikipedia.org/wiki/IPv6">IPv6</a> is much too limited). You’d like to figure out which
+IPs support TLS (transport-layer snooping).</p>
+<p>An IP supports TLS if it has an Autonomous Bridge Bypass Annotation, or ABBA. An ABBA is any
+four-character sequence which consists of a pair of two different characters followed by the
+reverse of that pair, such as <code>xyyx</code> or <code>abba</code>. However, the IP also must not have an ABBA
+within any hypernet sequences, which are contained by square brackets.</p>
+<p>For example:</p>
+<ul>
+<li><code>abba[mnop]qrst</code> supports TLS (<code>abba</code> outside square brackets).</li>
+<li><code>abcd[bddb]xyyx</code> does not support TLS (<code>bddb</code> is within square brackets, even though <code>xyyx</code>
+is outside square brackets).</li>
+<li><code>aaaa[qwer]tyui</code> does not support TLS (<code>aaaa</code> is invalid; the interior characters must
+be different).</li>
+<li><code>ioxxoj[asdfgh]zxcvbn</code> supports TLS (<code>oxxo</code> is outside square brackets, even though it’s
+within a larger string).</li>
+</ul>
+<p><strong>How many IPs in your puzzle input support TLS?</strong></p>
+<h2 id="part-two"><a href="#part-two">Part Two</a></h2>
+<p>You would also like to know which IPs support SSL (super-secret listening).</p>
+<p>An IP supports SSL if it has an Area-Broadcast Accessor, or ABA, anywhere in the supernet
+sequences (outside any square bracketed sections), and a corresponding Byte Allocation Block,
+or BAB, anywhere in the hypernet sequences. An ABA is any three-character sequence which
+consists of the same character twice with a different character between them, such as <code>xyx</code>
+or <code>aba</code>. A corresponding BAB is the same characters but in reversed positions: <code>yxy</code> and <code>bab</code>,
+respectively.</p>
+<p>For example:</p>
+<ul>
+<li><code>aba[bab]xyz</code> supports SSL (<code>aba</code> outside square brackets with corresponding <code>bab</code>
+within square brackets).</li>
+<li><code>xyx[xyx]xyx</code> does not support SSL (<code>xyx</code>, but no corresponding <code>yxy</code>).</li>
+<li><code>aaa[kek]eke</code> supports SSL (<code>eke</code> in supernet with corresponding <code>kek</code> in hypernet;
+the <code>aaa</code> sequence is not related, because the interior character must be different).</li>
+<li><code>zazbz[bzb]cdb</code> supports SSL (<code>zaz</code> has no corresponding <code>aza</code>, but <code>zbz</code> has a
+corresponding <code>bzb</code>, even though <code>zaz</code> and <code>zbz</code> overlap).</li>
+</ul>
+<p><strong>How many IPs in your puzzle input support SSL?</strong></p>
+</div></details><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="day7_part1/index.html" title="adventofcode_rust_2016::day7::day7_part1 mod">day7_part1</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="day7_part2/index.html" title="adventofcode_rust_2016::day7::day7_part2 mod">day7_part2</a></div><div class="item-right docblock-short"></div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Ipv7Address.html" title="adventofcode_rust_2016::day7::Ipv7Address struct">Ipv7Address</a></div><div class="item-right docblock-short"></div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.is_abba.html" title="adventofcode_rust_2016::day7::is_abba fn">is_abba</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.list_aba.html" title="adventofcode_rust_2016::day7::list_aba fn">list_aba</a></div><div class="item-right docblock-short"><p>An ABA is any three-character sequence which consists of the same character twice with a
+different character between them, such as <code>xyx</code> or <code>aba</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.parse_input.html" title="adventofcode_rust_2016::day7::parse_input fn">parse_input</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.part1.html" title="adventofcode_rust_2016::day7::part1 fn">part1</a></div><div class="item-right docblock-short"><p>Part 1: How many IPs in your puzzle input support TLS?</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.part2.html" title="adventofcode_rust_2016::day7::part2 fn">part2</a></div><div class="item-right docblock-short"><p>Part 2: How many IPs in your puzzle input support SSL?</p>
+</div></div></div></section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="adventofcode_rust_2016" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</body></html>

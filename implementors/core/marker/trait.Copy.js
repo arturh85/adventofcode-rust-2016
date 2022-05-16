@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["adventofcode_rust_2016"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.60.0/core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"enum\" href=\"adventofcode_rust_2016/day10/enum.Target.html\" title=\"enum adventofcode_rust_2016::day10::Target\">Target</a>","synthetic":false,"types":["adventofcode_rust_2016::day10::Target"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

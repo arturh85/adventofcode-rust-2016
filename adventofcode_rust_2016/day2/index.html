@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Day 2: Bathroom Security"><meta name="keywords" content="rust, rustlang, rust-lang, day2"><title>adventofcode_rust_2016::day2 - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../adventofcode_rust_2016/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../adventofcode_rust_2016/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Module day2</a></h2><div class="sidebar-elems"><section><div class="block"><ul><li><a href="#modules">Modules</a></li><li><a href="#enums">Enums</a></li><li><a href="#constants">Constants</a></li><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="day2" data-ty="mod" data-relpath="./"></div><script defer src="./sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../adventofcode_rust_2016/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Module <a href="../index.html">adventofcode_rust_2016</a>::<wbr><a class="mod" href="#">day2</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/adventofcode_rust_2016/day2.rs.html#1-193">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="day-2-bathroom-security"><a href="#day-2-bathroom-security">Day 2: Bathroom Security</a></h2>
+<p>You arrive at Easter Bunny Headquarters under cover of darkness. However, you left in such a
+rush that you forgot to use the bathroom! Fancy office buildings like this one usually have
+keypad locks on their bathrooms, so you search the front desk for the code.</p>
+<p>“In order to improve security,” the document you find says, “bathroom codes will no longer be
+written down. Instead, please memorize and follow the procedure below to access the bathrooms.”</p>
+<p>The document goes on to explain that each button to be pressed can be found by starting on the
+previous button and moving to adjacent buttons on the keypad: <code>U</code> moves up, <code>D</code> moves down, <code>L</code>
+moves left, and <code>R</code> moves right. Each line of instructions corresponds to one button, starting
+at the previous button (or, for the first line, the “5” button); press whatever button you’re
+on at the end of each line. If a move doesn’t lead to a button, ignore it.</p>
+<p>You can’t hold it much longer, so you decide to figure out the code as you walk to the bathroom.
+You picture a keypad like this:</p>
+<div class="example-wrap"><pre class="language-plain"><code>1 2 3
+4 5 6
+7 8 9</code></pre></div>
+<p>Suppose your instructions are:</p>
+<div class="example-wrap"><pre class="language-plain"><code>ULL
+RRDDD
+LURDL
+UUUUD</code></pre></div>
+<ul>
+<li>You start at “5” and move up (to “2”), left (to “1”), and left (you can’t, and stay on “1”),
+so the first button is <code>1</code>.</li>
+<li>Starting from the previous button (“1”), you move right twice (to “3”) and then down three
+times (stopping at “9” after two moves and ignoring the third), ending up with <code>9</code>.</li>
+<li>Continuing from “9”, you move left, up, right, down, and left, ending with <code>8</code>.</li>
+<li>Finally, you move up four times (stopping at “2”), then down once, ending with <code>5</code>.</li>
+</ul>
+<p>So, in this example, the bathroom code is <code>1985</code>.</p>
+<p>Your puzzle input is the instructions from the document you found at the front desk.</p>
+<p><strong>What is the bathroom code?</strong></p>
+<h2 id="part-two"><a href="#part-two">Part Two</a></h2>
+<p>You finally arrive at the bathroom (it’s a several minute walk from the lobby so visitors can
+behold the many fancy conference rooms and water coolers on this floor) and go to punch in
+the code. Much to your bladder’s dismay, the keypad is not at all like you imagined it.
+Instead, you are confronted with the result of hundreds of man-hours of
+bathroom-keypad-design meetings:</p>
+<div class="example-wrap"><pre class="language-plain"><code>    1
+  2 3 4
+5 6 7 8 9
+  A B C
+    D</code></pre></div>
+<p>You still start at “5” and stop when you’re at an edge, but given the same
+instructions as above, the outcome is very different:</p>
+<ul>
+<li>You start at “5” and don’t move at all (up and left are both edges), ending at <code>5</code>.</li>
+<li>Continuing from “5”, you move right twice and down three times
+(through “6”, “7”, “B”, “D”, “D”), ending at <code>D</code>.</li>
+<li>Then, from “D”, you move five more times (through “D”, “B”, “C”, “C”, “B”), ending at <code>B</code>.</li>
+<li>Finally, after five more moves, you end at <code>3</code>.</li>
+</ul>
+<p>So, given the actual keypad layout, the code would be <code>5DB3</code>.</p>
+<p>Using the same instructions in your puzzle input, what is the correct bathroom code?</p>
+</div></details><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="day2_part1/index.html" title="adventofcode_rust_2016::day2::day2_part1 mod">day2_part1</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="day2_part2/index.html" title="adventofcode_rust_2016::day2::day2_part2 mod">day2_part2</a></div><div class="item-right docblock-short"></div></div></div><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Instr.html" title="adventofcode_rust_2016::day2::Instr enum">Instr</a></div><div class="item-right docblock-short"></div></div></div><h2 id="constants" class="small-section-header"><a href="#constants">Constants</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="constant" href="constant.KEYPAD_1.html" title="adventofcode_rust_2016::day2::KEYPAD_1 constant">KEYPAD_1</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="constant" href="constant.KEYPAD_2.html" title="adventofcode_rust_2016::day2::KEYPAD_2 constant">KEYPAD_2</a></div><div class="item-right docblock-short"></div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.execute.html" title="adventofcode_rust_2016::day2::execute fn">execute</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.keypad_get.html" title="adventofcode_rust_2016::day2::keypad_get fn">keypad_get</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.parse_input.html" title="adventofcode_rust_2016::day2::parse_input fn">parse_input</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.part1.html" title="adventofcode_rust_2016::day2::part1 fn">part1</a></div><div class="item-right docblock-short"><p>Part 1: What is the bathroom code?</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.part2.html" title="adventofcode_rust_2016::day2::part2 fn">part2</a></div><div class="item-right docblock-short"><p>Part 2: Using the same instructions in your puzzle input, what is the correct bathroom code?</p>
+</div></div></div></section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="adventofcode_rust_2016" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</body></html>

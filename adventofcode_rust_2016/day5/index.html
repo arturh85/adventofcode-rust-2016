@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Day 5: How About a Nice Game of Chess?"><meta name="keywords" content="rust, rustlang, rust-lang, day5"><title>adventofcode_rust_2016::day5 - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../adventofcode_rust_2016/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../adventofcode_rust_2016/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Module day5</a></h2><div class="sidebar-elems"><section><div class="block"><ul><li><a href="#modules">Modules</a></li><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="day5" data-ty="mod" data-relpath="./"></div><script defer src="./sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../adventofcode_rust_2016/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Module <a href="../index.html">adventofcode_rust_2016</a>::<wbr><a class="mod" href="#">day5</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/adventofcode_rust_2016/day5.rs.html#1-182">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="day-5-how-about-a-nice-game-of-chess"><a href="#day-5-how-about-a-nice-game-of-chess">Day 5: How About a Nice Game of Chess?</a></h2>
+<p>You are faced with a security door designed by Easter Bunny engineers that seem to have
+acquired most of their security knowledge by watching
+<a href="https://en.wikipedia.org/wiki/Hackers_(film)">hacking</a>
+<a href="https://en.wikipedia.org/wiki/WarGames">movies</a>.</p>
+<p>The eight-character password for the door is generated one character at a time by finding
+the <a href="https://en.wikipedia.org/wiki/MD5">MD5</a> hash of some Door ID (your puzzle input) and
+an increasing integer index (starting with <code>0</code>).</p>
+<p>A hash indicates the next character in the password if its
+<a href="https://en.wikipedia.org/wiki/Hexadecimal">hexadecimal</a> representation starts with five zeroes.
+If it does, the sixth character in the hash is the next character of the password.</p>
+<p>For example, if the Door ID is <code>abc</code>:</p>
+<ul>
+<li>The first index which produces a hash that starts with five zeroes is <code>3231929</code>, which we
+find by hashing <code>abc3231929</code>; the sixth character of the hash, and thus the first character
+of the password, is <code>1</code>.</li>
+<li><code>5017308</code> produces the next interesting hash, which starts with <code>000008f82...</code>, so the
+second character of the password is <code>8</code>.</li>
+<li>The third time a hash starts with five zeroes is for <code>abc5278568</code>, discovering the
+character <code>f</code>.</li>
+</ul>
+<p>In this example, after continuing this search a total of eight times,
+the password is <code>18f47a30</code>.</p>
+<p><strong>Given the actual Door ID, what is the password?</strong></p>
+<h2 id="part-two"><a href="#part-two">Part Two</a></h2>
+<p>As the door slides open, you are presented with a second door that uses a slightly more
+inspired security mechanism. Clearly unimpressed by the last version (in what movie is the
+password decrypted in order?!), the Easter Bunny engineers have worked out
+<a href="https://www.youtube.com/watch?v=NHWjlCaIrQo&amp;t=25">a better solution</a>.</p>
+<p>Instead of simply filling in the password from left to right, the hash now also indicates the
+position within the password to fill. You still look for hashes that begin with five zeroes;
+however, now, the sixth character represents the position (<code>0</code>-<code>7</code>), and the seventh character
+is the character to put in that position.</p>
+<p>A hash result of <code>000001f</code> means that <code>f</code> is the second character in the password. Use only the
+first result for each position, and ignore invalid positions.</p>
+<p>For example, if the Door ID is <code>abc</code>:</p>
+<ul>
+<li>The first interesting hash is from <code>abc3231929</code>, which produces <code>0000015...</code>; so, <code>5</code> goes
+in position <code>1</code>: <code>_5______</code>.</li>
+<li>In the previous method, <code>5017308</code> produced an interesting hash; however, it is ignored,
+because it specifies an invalid position (<code>8</code>).</li>
+<li>The second interesting hash is at index <code>5357525</code>, which produces <code>000004e...</code>; so, <code>e</code>
+goes in position <code>4</code>: <code>_5__e___</code>.</li>
+</ul>
+<p>You almost choke on your popcorn as the final character falls into place, producing the
+password <code>05ace8e3</code>.</p>
+<p><strong>Given the actual Door ID and this new method, what is the password?</strong>
+Be extra proud of your solution if it uses a cinematic “decrypting” animation.</p>
+</div></details><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="day5_part1/index.html" title="adventofcode_rust_2016::day5::day5_part1 mod">day5_part1</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="day5_part2/index.html" title="adventofcode_rust_2016::day5::day5_part2 mod">day5_part2</a></div><div class="item-right docblock-short"></div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.md5_suffix_increment_until.html" title="adventofcode_rust_2016::day5::md5_suffix_increment_until fn">md5_suffix_increment_until</a></div><div class="item-right docblock-short"><p>increments a counter starting at 0 which is appended to <code>input</code> until <code>test</code> returns
+true for the md5 hash buffer, then returns the counter</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.part1.html" title="adventofcode_rust_2016::day5::part1 fn">part1</a></div><div class="item-right docblock-short"><p>Part 1: Given the actual Door ID, what is the password?</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.part2.html" title="adventofcode_rust_2016::day5::part2 fn">part2</a></div><div class="item-right docblock-short"><p>Part 2: Given the actual Door ID and this new method, what is the password?</p>
+</div></div></div></section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="adventofcode_rust_2016" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</body></html>

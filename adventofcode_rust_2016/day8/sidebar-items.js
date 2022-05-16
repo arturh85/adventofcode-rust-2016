@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Instruction",""]],"fn":[["build_grid",""],["count_on",""],["display_grid",""],["execute",""],["parse_input",""],["part1","Part 1: after you swipe your card, if the screen did work, how many pixels should be lit?"],["part2","Part 2: After you swipe your card, what code is the screen trying to display?"]],"mod":[["day8_part1",""],["day8_part2",""]]});
