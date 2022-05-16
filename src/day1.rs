@@ -50,7 +50,7 @@ use num_traits::ToPrimitive;
 fn parse_input(input: &str) -> Vec<Instr> {
     input
         .split(", ")
-        .map(|part| match part.chars().nth(0).unwrap() {
+        .map(|part| match part.chars().next().unwrap() {
             'L' => Instr::Left(part[1..].parse().unwrap()),
             'R' => Instr::Right(part[1..].parse().unwrap()),
             _ => panic!("invalid input"),
@@ -131,8 +131,7 @@ fn execute1(instructions: &Vec<Instr>) -> (i64, i64) {
 fn execute2(instructions: &Vec<Instr>) -> Option<(i64, i64)> {
     let mut pos = (0, 0);
     let mut direction = Direction::North;
-    let mut history: Vec<(i64, i64)> = Vec::new();
-    history.push(pos);
+    let mut history: Vec<(i64, i64)> = vec![pos];
     for instr in instructions {
         let amount = match instr {
             Instr::Left(amount) => {

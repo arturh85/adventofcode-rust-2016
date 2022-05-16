@@ -99,108 +99,101 @@ fn parse_input(input: &str) -> Vec<Instruction> {
 /// with value-`17` microchips?
 #[aoc(day10, part1)]
 fn part1(input: &[Instruction]) -> u32 {
-    Factory::look_for(input, 17, 61).unwrap()
+    Factory::find_bot_comparing(input, 17, 61).unwrap()
 }
 
 /// Part 2: What do you get if you multiply together the values of one chip in each of
 /// outputs 0, 1, and 2?
 #[aoc(day10, part2)]
-fn part2(input: &Vec<Instruction>) -> u32 {
+fn part2(input: &[Instruction]) -> u32 {
     let mut state = Factory::new();
-    state.exec(input);
+    state.execute(input);
     (0..3_u32).map(|n| state.outputs.get(&n).unwrap()).product()
 }
 
+type BotId = u32;
+type OutputId = u32;
+type ChipId = u32;
+
 struct Factory {
-    bots: HashMap<u32, Vec<u32>>,
-    queue: HashMap<u32, (Target, Target)>,
-    outputs: HashMap<u32, u32>,
-    look_for: Option<(u32, u32)>,
-    look_target: Option<u32>,
+    bots: HashMap<BotId, Vec<ChipId>>,
+    outputs: HashMap<OutputId, ChipId>,
+    queue: HashMap<BotId, (Target, Target)>,
+    look_for_comparision: Option<(ChipId, ChipId)>,
+    bot_comparing: Option<BotId>,
 }
 
 impl Factory {
     fn new() -> Self {
         Factory {
             bots: HashMap::new(),
-            queue: HashMap::new(),
             outputs: HashMap::new(),
-            look_for: None,
-            look_target: None,
+            queue: HashMap::new(),
+            look_for_comparision: None,
+            bot_comparing: None,
         }
     }
 
-    fn look_for(input: &[Instruction], low: u32, high: u32) -> Option<u32> {
+    fn find_bot_comparing(input: &[Instruction], a: ChipId, b: ChipId) -> Option<BotId> {
         let mut state = Factory::new();
-        state.look_for = Some((low, high));
-        state.exec(input);
-        state.look_target
+        state.look_for_comparision = Some(if a < b { (a, b) } else { (b, a) });
+        state.execute(input);
+        state.bot_comparing
     }
 
-    fn exec(&mut self, instructions: &[Instruction]) {
-        for instr in instructions {
-            self.exec_single(instr);
+    fn execute(&mut self, instructions: &[Instruction]) {
+        for instruction in instructions {
+            match instruction {
+                Instruction::ValueToBot((bot_nr, value)) => self.value_to_bot(*bot_nr, *value),
+                Instruction::BotTo((bot_nr, low_target, high_target)) => {
+                    let bot_values = self.bot_chips(*bot_nr);
+                    if bot_values.len() == 2 {
+                        self.bot_to(*bot_nr, *low_target, *high_target);
+                    } else {
+                        self.queue.insert(*bot_nr, (*low_target, *high_target));
+                    }
+                }
+            };
         }
     }
 
-    fn exec_single(&mut self, instr: &Instruction) {
-        match instr {
-            Instruction::ValueToBot((bot_nr, value)) => self.bot_add(*bot_nr, *value),
-            Instruction::BotTo((bot_nr, low_target, high_target)) => {
-                let bot_values = self.bot_values(*bot_nr);
-                if bot_values.len() == 2 {
-                    self.give(*bot_nr, low_target, high_target);
-                } else {
-                    self.queue
-                        .insert(*bot_nr, (low_target.clone(), high_target.clone()));
-                }
-            }
-        };
-    }
-
-    fn give(&mut self, bot_nr: u32, low_target: &Target, high_target: &Target) {
-        let bot_values = self.bot_values(bot_nr);
+    fn bot_to(&mut self, bot_nr: BotId, low_target: Target, high_target: Target) {
+        let bot_values = self.bot_chips(bot_nr);
         if bot_values.len() == 2 {
             let low = bot_values[0];
             let high = bot_values[1];
-            if let Some((look_low, look_high)) = self.look_for {
+            if let Some((look_low, look_high)) = self.look_for_comparision {
                 if low == look_low && high == look_high {
-                    self.look_target = Some(bot_nr);
+                    self.bot_comparing = Some(bot_nr);
                 }
             }
-            self.target_add(low_target, low);
-            self.target_add(high_target, high);
+            self.value_to_target(low_target, low);
+            self.value_to_target(high_target, high);
             self.bots.remove(&bot_nr);
         }
     }
 
-    fn target_add(&mut self, target: &Target, value: u32) {
+    fn value_to_target(&mut self, target: Target, value: ChipId) {
         match target {
-            Target::Bot(bot_nr) => self.bot_add(*bot_nr, value),
+            Target::Bot(bot_nr) => self.value_to_bot(bot_nr, value),
             Target::Output(output_nr) => {
-                self.outputs.insert(*output_nr, value);
+                self.outputs.insert(output_nr, value);
             }
         }
     }
 
-    fn bot_add(&mut self, bot_nr: u32, value: u32) {
-        if let Some(values) = self.bots.get_mut(&bot_nr) {
-            values.push(value);
-            values.sort();
-            if values.len() == 2 {
-                if let Some((low_target, high_target)) = self.queue.get(&bot_nr) {
-                    let low_target = low_target.clone();
-                    let high_target = high_target.clone();
-                    self.give(bot_nr, &low_target, &high_target);
-                    self.queue.remove(&bot_nr);
-                }
+    fn value_to_bot(&mut self, bot_nr: BotId, value: ChipId) {
+        let values = self.bots.entry(bot_nr).or_insert_with(Vec::new);
+        values.push(value);
+        values.sort_unstable();
+        if values.len() == 2 {
+            if let Some((low_target, high_target)) = self.queue.remove(&bot_nr) {
+                self.bot_to(bot_nr, low_target, high_target);
             }
-        } else {
-            self.bots.insert(bot_nr, vec![value]);
         }
     }
 
-    fn bot_values(&self, bot_nr: u32) -> Vec<u32> {
+    fn bot_chips(&self, bot_nr: BotId) -> Vec<ChipId> {
         if let Some(value) = self.bots.get(&bot_nr) {
             value.clone()
         } else {
@@ -209,16 +202,16 @@ impl Factory {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Copy, Clone)]
 enum Target {
-    Bot(u32),
-    Output(u32),
+    Bot(BotId),
+    Output(OutputId),
 }
 
 #[derive(Debug, Clone)]
 enum Instruction {
-    ValueToBot((u32, u32)),
-    BotTo((u32, Target, Target)),
+    ValueToBot((BotId, ChipId)),
+    BotTo((BotId, Target, Target)),
 }
 
 #[cfg(test)]
@@ -235,7 +228,10 @@ value 2 goes to bot 2";
     #[test]
     fn part1_examples() {
         // bot number `2` is responsible for comparing value-`5` microchips with value-`2` microchips
-        assert_eq!(2, Factory::look_for(&parse_input(EXAMPLE), 2, 5).unwrap());
+        assert_eq!(
+            2,
+            Factory::find_bot_comparing(&parse_input(EXAMPLE), 2, 5).unwrap()
+        );
     }
 
     #[test]

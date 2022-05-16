@@ -123,7 +123,7 @@ enum Instruction {
     RotateColumn((usize, usize)),
 }
 
-fn display_grid(grid: &Vec<Vec<bool>>) {
+fn display_grid(grid: &[Vec<bool>]) {
     for row in grid.iter() {
         let mut s = String::new();
         for col in row {
@@ -137,7 +137,7 @@ fn display_grid(grid: &Vec<Vec<bool>>) {
     }
 }
 
-fn count_on(grid: &Vec<Vec<bool>>) -> usize {
+fn count_on(grid: &[Vec<bool>]) -> usize {
     grid.iter()
         .map(|row| row.iter().filter(|col| **col).count())
         .sum()
@@ -158,9 +158,9 @@ fn execute(input: &Vec<Instruction>) -> Vec<Vec<bool>> {
             // `rect AxB` turns on all of the pixels in a rectangle at the top-left of the screen
             // which is `A` wide and `B` tall.
             Instruction::Rect((w, h)) => {
-                for y in 0..*h {
-                    for x in 0..*w {
-                        grid[y][x] = true;
+                for row in grid.iter_mut().take(*h) {
+                    for col in row.iter_mut().take(*w) {
+                        *col = true;
                     }
                 }
             }

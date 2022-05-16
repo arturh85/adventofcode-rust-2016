@@ -58,7 +58,7 @@ fn parse_input(input: &str) -> Vec<[u64; 3]> {
 
 /// Part 1: In your puzzle input, how many of the listed triangles are possible?
 #[aoc(day3, part1)]
-fn part1(input: &Vec<[u64; 3]>) -> usize {
+fn part1(input: &[[u64; 3]]) -> usize {
     input
         .iter()
         .filter(|triangle| valid_triange(triangle))
@@ -68,7 +68,7 @@ fn part1(input: &Vec<[u64; 3]>) -> usize {
 /// Part 2: In your puzzle input, and instead reading by columns, how many of the listed triangles
 /// are possible?
 #[aoc(day3, part2)]
-fn part2(input: &Vec<[u64; 3]>) -> usize {
+fn part2(input: &[[u64; 3]]) -> usize {
     rebuild_triangles(input)
         .iter()
         .filter(|triangle| valid_triange(triangle))
@@ -76,7 +76,8 @@ fn part2(input: &Vec<[u64; 3]>) -> usize {
 }
 
 // interpret triangles row-wise
-fn rebuild_triangles(input: &Vec<[u64; 3]>) -> Vec<[u64; 3]> {
+#[allow(clippy::identity_op)]
+fn rebuild_triangles(input: &[[u64; 3]]) -> Vec<[u64; 3]> {
     let mut triangles = Vec::new();
 
     for col in 0..3 {

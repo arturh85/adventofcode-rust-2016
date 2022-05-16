@@ -81,11 +81,8 @@ fn part1(input: &str) -> String {
 /// Part 2: Given the actual Door ID and this new method, what is the password?
 #[aoc(day5, part2)]
 fn part2(input: &str) -> String {
-    let mut password: Vec<char> = Vec::new();
+    let mut password: Vec<char> = vec![' '; 8];
     let mut start = 0;
-    for _ in 0..8 {
-        password.push(' ');
-    }
     while password.contains(&' ') {
         let (next, md5) = md5_suffix_increment_until(input, start, |output| {
             let first_five = output[0] as i32 + output[1] as i32 + (output[2] >> 4) as i32;
@@ -93,45 +90,45 @@ fn part2(input: &str) -> String {
         });
         let md5a = format!("{:02x?}", md5[2]);
         let md5b = format!("{:02x?}", md5[3]);
-        let char_to_put = &md5b[0..1].chars().nth(0).unwrap();
+        let char_to_put = &md5b[0..1].chars().next().unwrap();
         let position = &md5a[1..2];
-        match &position {
-            &"0" => {
+        match position {
+            "0" => {
                 if password[0] == ' ' {
                     password[0] = *char_to_put
                 }
             }
-            &"1" => {
+            "1" => {
                 if password[1] == ' ' {
                     password[1] = *char_to_put
                 }
             }
-            &"2" => {
+            "2" => {
                 if password[2] == ' ' {
                     password[2] = *char_to_put
                 }
             }
-            &"3" => {
+            "3" => {
                 if password[3] == ' ' {
                     password[3] = *char_to_put
                 }
             }
-            &"4" => {
+            "4" => {
                 if password[4] == ' ' {
                     password[4] = *char_to_put
                 }
             }
-            &"5" => {
+            "5" => {
                 if password[5] == ' ' {
                     password[5] = *char_to_put
                 }
             }
-            &"6" => {
+            "6" => {
                 if password[6] == ' ' {
                     password[6] = *char_to_put
                 }
             }
-            &"7" => {
+            "7" => {
                 if password[7] == ' ' {
                     password[7] = *char_to_put
                 }

@@ -41,6 +41,7 @@
 //! **What is the sector ID of the room where North Pole objects are stored?**
 
 use regex::Regex;
+use std::collections::hash_map::Entry;
 use std::collections::{HashMap, HashSet};
 
 #[aoc_generator(day4)]
@@ -64,7 +65,7 @@ fn parse_input(input: &str) -> Vec<Room> {
 
 /// Part 1: What is the sum of the sector IDs of the real rooms?
 #[aoc(day4, part1)]
-fn part1(input: &Vec<Room>) -> u32 {
+fn part1(input: &[Room]) -> u32 {
     input
         .iter()
         .filter(|room| room.is_valid())
@@ -74,7 +75,7 @@ fn part1(input: &Vec<Room>) -> u32 {
 
 /// Part 2: What is the sector ID of the room where North Pole objects are stored?
 #[aoc(day4, part2)]
-fn part2(input: &Vec<Room>) -> u32 {
+fn part2(input: &[Room]) -> u32 {
     input
         .iter()
         .find(|room| decrypt(&room.name, room.sector_id).eq("northpole object storage"))
@@ -93,17 +94,17 @@ impl Room {
     /// encrypted name, in order, with ties broken by alphabetization.
     fn is_valid(&self) -> bool {
         let mut count_map: HashMap<char, u32> = HashMap::new();
-        for c in self.name.replace("-", "").chars() {
-            if count_map.contains_key(&c) {
+        for c in self.name.replace('-', "").chars() {
+            if let Entry::Vacant(e) = count_map.entry(c) {
+                e.insert(1);
+            } else {
                 let val = count_map.get_mut(&c).unwrap();
                 *val += 1;
-            } else {
-                count_map.insert(c, 1);
             }
         }
-        let counts: HashSet<u32> = count_map.values().map(|v| *v).collect();
-        let mut counts: Vec<u32> = counts.iter().map(|v| *v).collect();
-        counts.sort();
+        let counts: HashSet<u32> = count_map.values().copied().collect();
+        let mut counts: Vec<u32> = counts.iter().copied().collect();
+        counts.sort_unstable();
         counts.reverse();
 
         let mut checksum = String::new();
@@ -149,7 +150,7 @@ fn decrypt(name: &str, sector_id: u32) -> String {
 
 fn sort(s: &str) -> String {
     let mut chars: Vec<char> = s.chars().collect();
-    chars.sort_by(|a, b| a.cmp(b));
+    chars.sort_unstable();
     String::from_iter(chars)
 }
 

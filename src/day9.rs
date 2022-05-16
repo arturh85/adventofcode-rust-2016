@@ -73,6 +73,7 @@ fn parse_marker(input: &str) -> (usize, usize) {
     (parts[0], parts[1])
 }
 
+#[allow(clippy::unnecessary_unwrap)]
 fn decompress1(input: &str) -> String {
     let mut out = String::new();
     let mut marker_start: Option<usize> = None;

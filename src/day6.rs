@@ -52,6 +52,7 @@
 //! Given the recording in your puzzle input and this new decoding methodology, what is the original
 //! message that Santa is trying to send?
 
+use std::collections::hash_map::Entry;
 use std::collections::HashMap;
 
 /// Part 1: Given the recording in your puzzle input, what is the error-corrected version of the
@@ -74,15 +75,15 @@ fn decode(input: &str, most_common: bool) -> String {
     for col in cols {
         let mut count_map: HashMap<char, u32> = HashMap::new();
         for c in col.chars() {
-            if count_map.contains_key(&c) {
+            if let Entry::Vacant(e) = count_map.entry(c) {
+                e.insert(1);
+            } else {
                 let val = count_map.get_mut(&c).unwrap();
                 *val += 1;
-            } else {
-                count_map.insert(c, 1);
             }
         }
-        let mut counts: Vec<u32> = count_map.values().map(|v| *v).collect();
-        counts.sort();
+        let mut counts: Vec<u32> = count_map.values().copied().collect();
+        counts.sort_unstable();
         if most_common {
             counts.reverse();
         }

@@ -159,7 +159,7 @@ fn execute(input: &Vec<Vec<Instr>>, keypad: &str, start: char) -> String {
         for instr in line {
             let vec = instr.vec();
             let target = (pos.0 + vec.0, pos.1 + vec.1);
-            if let Some(_) = keypad_get(keypad, target) {
+            if keypad_get(keypad, target).is_some() {
                 pos = target;
             }
         }

@@ -54,14 +54,14 @@ fn parse_input(input: &str) -> Vec<Ipv7Address> {
             let mut hypernets = Vec::new();
 
             let parts: Vec<String> = line
-                .replace("[", "|[")
-                .replace("]", "]|")
+                .replace('[', "|[")
+                .replace(']', "]|")
                 .split('|')
                 .map(|p| p.to_string())
                 .collect();
             for part in parts {
-                if part.starts_with("[") {
-                    hypernets.push(part.replace("[", "").replace("]", ""));
+                if part.starts_with('[') {
+                    hypernets.push(part.replace('[', "").replace(']', ""));
                 } else {
                     supernets.push(part);
                 }
@@ -76,7 +76,7 @@ fn parse_input(input: &str) -> Vec<Ipv7Address> {
 
 /// Part 1: How many IPs in your puzzle input support TLS?
 #[aoc(day7, part1)]
-fn part1(input: &Vec<Ipv7Address>) -> usize {
+fn part1(input: &[Ipv7Address]) -> usize {
     input
         .iter()
         .filter(|address| address.is_tls_supported())
@@ -85,7 +85,7 @@ fn part1(input: &Vec<Ipv7Address>) -> usize {
 
 /// Part 2: How many IPs in your puzzle input support SSL?
 #[aoc(day7, part2)]
-fn part2(input: &Vec<Ipv7Address>) -> usize {
+fn part2(input: &[Ipv7Address]) -> usize {
     input
         .iter()
         .filter(|address| address.is_ssl_supported())
@@ -144,15 +144,12 @@ impl Ipv7Address {
 /// returns list of transformed BAB to search for
 fn list_aba(input: &str) -> Vec<String> {
     let mut aba_list = Vec::new();
-    let input: Vec<char> = input.chars().map(|c| c).collect();
+    let input: Vec<char> = input.chars().collect();
     for window in input.windows(3) {
         let window = String::from_iter(window);
-        let chars: Vec<char> = window.chars().map(|c| c).collect();
+        let chars: Vec<char> = window.chars().collect();
         if chars[0] != chars[1] && chars[0] == chars[2] {
-            let mut bab: Vec<char> = Vec::new();
-            bab.push(chars[1]);
-            bab.push(chars[0]);
-            bab.push(chars[1]);
+            let bab: Vec<char> = vec![chars[1], chars[0], chars[1]];
             aba_list.push(String::from_iter(bab));
         }
     }
@@ -160,10 +157,10 @@ fn list_aba(input: &str) -> Vec<String> {
 }
 
 fn is_abba(input: &str) -> bool {
-    let input: Vec<char> = input.chars().map(|c| c).collect();
+    let input: Vec<char> = input.chars().collect();
     for window in input.windows(4) {
         let window = String::from_iter(window);
-        let chars: Vec<char> = window.chars().map(|c| c).collect();
+        let chars: Vec<char> = window.chars().collect();
         if chars[0] != chars[1] && chars[0] == chars[3] && chars[1] == chars[2] {
             return true;
         }
